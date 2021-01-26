@@ -2907,6 +2907,16 @@ WifiPhy::Send (WifiPsduMap psdus, WifiTxVector txVector)
       txDuration = CalculateTxDuration (psdus, txVector, GetFrequency ());
     }
 
+  //----------------------------------------------------------------------------------------------------------
+  //display data
+/*
+  Ptr<WifiNetDevice> wifiNetDevice = DynamicCast<WifiNetDevice> (GetDevice());
+  uint32_t currentNodeID = wifiNetDevice->GetNode () -> GetId();
+  std::cout << "Tx, " << Simulator::Now() << ", " << currentNodeID << ", " << txDuration << ", " << txVector.GetMode() << std::endl;
+*/
+  //----------------------------------------------------------------------------------------------------------
+
+
   if (!m_endPreambleDetectionEvents.empty () || m_currentEvent != 0)
     {
       MaybeCcaBusy (); //needed to keep busy state afterwards
