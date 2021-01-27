@@ -35,7 +35,6 @@
 #include "wifi-utils.h"
 #include "wifi-ppdu.h"
 #include "wifi-psdu.h"
-#include "wifi-net-device.h"
 
 namespace ns3 {
 
@@ -256,15 +255,6 @@ SpectrumWifiPhy::StartRx (Ptr<SpectrumSignalParameters> rxParams)
     {
       senderNodeId = rxParams->txPhy->GetDevice ()->GetNode ()->GetId ();
     }
-
-//Display receive data -----------------------------------------------------------------------------------------------------------------
-/*
-  Ptr<WifiNetDevice> wifiNetDevice = DynamicCast<WifiNetDevice> (GetDevice());
-  uint32_t currentNodeID = wifiNetDevice->GetNode () -> GetId();
-  std::cout << "Rx, " << Simulator::Now() << ", " << senderNodeId << ", " << currentNodeID << ", " << rxDuration << ", with unfiltered power, " << WToDbm (Integral (*receivedSignalPsd)) << std::endl;
-*/
-//--------------------------------------------------------------------------------------------------------------------------------------
-
   NS_LOG_DEBUG ("Received signal from " << senderNodeId << " with unfiltered power " << WToDbm (Integral (*receivedSignalPsd)) << " dBm");
 
   // Integrate over our receive bandwidth (i.e., all that the receive
@@ -289,7 +279,6 @@ SpectrumWifiPhy::StartRx (Ptr<SpectrumSignalParameters> rxParams)
       rxPowerW.push_back (std::make_pair (filteredBand, rxPowerPerBandW));
       NS_LOG_DEBUG ("Signal power received after antenna gain for " << channelWidth << " MHz channel: " << rxPowerPerBandW << " W (" << WToDbm (rxPowerPerBandW) << " dBm)");
     }
-
 
   for (uint8_t i = 0; i < (channelWidth / 20); i++)
     {

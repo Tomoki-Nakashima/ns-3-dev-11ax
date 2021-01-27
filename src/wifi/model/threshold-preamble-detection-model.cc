@@ -68,20 +68,17 @@ ThresholdPreambleDetectionModel::IsPreambleDetected (double rssi, double snr, do
     {
       if (RatioToDb (snr) >= m_threshold)
         {
-//std::cout << "Sencing OK" << std::endl;
           return true;
         }
       else
         {
           NS_LOG_DEBUG ("Received RSSI is above the target RSSI but SNR is too low");
-//std::cout << "Sencing NO(Received RSSI is above the target RSSI but SNR is too low)" << std::endl;
           return false;
         }
     }
   else
     {
       NS_LOG_DEBUG ("Received RSSI is below the target RSSI");
-//std::cout << "Sencing NO(Received RSSI is below the target RSSI)" << std::endl;
       return false;
     }
   

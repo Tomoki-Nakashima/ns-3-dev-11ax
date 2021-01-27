@@ -36,20 +36,6 @@
 #include "ns3/wifi-net-device.h"
 #include "ns3/random-variable-stream.h"
 #include "ns3/wifi-utils.h"
-#include <iostream>
-#include <iomanip>
-#include <ns3/core-module.h>
-#include <ns3/config-store-module.h>
-#include <ns3/network-module.h>
-#include <ns3/mobility-module.h>
-#include <ns3/internet-module.h>
-#include <ns3/wifi-module.h>
-#include <ns3/spectrum-module.h>
-#include <ns3/applications-module.h>
-#include <ns3/propagation-module.h>
-#include <ns3/flow-monitor-module.h>
-#include <ns3/flow-monitor-helper.h>
-
 
 // for tracking packets and bytes received. will be reallocated once we finalize
 // number of nodes
@@ -57,125 +43,11 @@ std::vector<uint64_t> packetsReceived (0);
 std::vector<uint64_t> bytesReceived (0);
 double expn = 3.5, Pref = -30, Pn = -94, TxP = 20;
 
-std::vector<std::vector<uint64_t> > packetsReceivedPerNode;
-std::vector<std::vector<double> > rssiPerNode;
-
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("WifiChannelBonding");
 // Parse context strings of the form "/NodeList/3/DeviceList/1/Mac/Assoc"
 // to extract the NodeId
-
-  uint16_t n = 1;
-  uint16_t nBss = 1;
-uint32_t nEstablishedAddaBa = 0;
-bool allAddBaEstablished = false;
-Time timeAllAddBaEstablished;
-Time timeLastPacketReceived;
-bool filterOutNonAddbaEstablished = false;
-
-  uint32_t payloadSize = 1472; // bytes
-  double simulationTime = 20; // seconds
-  double distance = 10; // meters
-  double interBssDistance = 50; // meters
-  double txMaskInnerBandMinimumRejection = -40.0; // dBr
-  double txMaskOuterBandMinimumRejection = -56.0; // dBr
-  double txMaskOuterBandMaximumRejection = -80.0; // dBr
-
-  uint16_t channelBss=36;
-  uint16_t channelBssA = 36;
-  uint16_t channelBssB = 36;
-  uint16_t channelBssC = 36;
-  uint16_t channelBssD = 36;
-  uint16_t channelBssE = 36;
-  uint16_t channelBssF = 36;
-  uint16_t channelBssG = 36;
-
-uint16_t primaryChannelBss=36;
-  uint16_t primaryChannelBssA = 36;
-  uint16_t primaryChannelBssB = 36;
-  uint16_t primaryChannelBssC = 36;
-  uint16_t primaryChannelBssD = 36;
-  uint16_t primaryChannelBssE = 36;
-  uint16_t primaryChannelBssF = 36;
-  uint16_t primaryChannelBssG = 36;
-
-  std::string mcs ="IdealWifi";
-  std::string mcs1 = "IdealWifi";
-  std::string mcs2 = "IdealWifi";
-  std::string mcs3 = "IdealWifi";
-  std::string mcs4 = "IdealWifi";
-  std::string mcs5 = "IdealWifi";
-  std::string mcs6 = "IdealWifi";
-  std::string mcs7 = "IdealWifi";
-
-  double ccaSdThreshold = -82.0;
-
-  double ccaEdThresholdPrimaryBss = -62.0;
-  double constantCcaEdThresholdSecondaryBss = -62.0;
-  double ccaEdThresholdPrimaryBssA = -62.0;
-  double constantCcaEdThresholdSecondaryBssA = -62.0;
-  double ccaEdThresholdPrimaryBssB = -62.0;
-  double constantCcaEdThresholdSecondaryBssB = -62.0;
-  double ccaEdThresholdPrimaryBssC = -62.0;
-  double constantCcaEdThresholdSecondaryBssC = -62.0;
-  double ccaEdThresholdPrimaryBssD = -62.0;
-  double constantCcaEdThresholdSecondaryBssD = -62.0;
-  double ccaEdThresholdPrimaryBssE = -62.0;
-  double constantCcaEdThresholdSecondaryBssE = -62.0;
-  double ccaEdThresholdPrimaryBssF = -62.0;
-  double constantCcaEdThresholdSecondaryBssF = -62.0;
-  double ccaEdThresholdPrimaryBssG = -62.0;
-  double constantCcaEdThresholdSecondaryBssG = -62.0;
-
-  std::string channelBondingType = "ConstantThreshold";
-  std::string Test = "";
-
-
-  uint32_t maxMissedBeacons = 4294967295;
-
-  double aggregateDownlinkAMbps = 0;
-  double aggregateDownlinkBMbps = 0;
-  double aggregateDownlinkCMbps = 0;
-  double aggregateDownlinkDMbps = 0;
-  double aggregateDownlinkEMbps = 0;
-  double aggregateDownlinkFMbps = 0;
-  double aggregateDownlinkGMbps = 0;
-
-
-  double aggregateUplinkAMbps = 0;
-  double aggregateUplinkBMbps = 0;
-  double aggregateUplinkCMbps = 0;
-  double aggregateUplinkDMbps = 0;
-  double aggregateUplinkEMbps = 0;
-  double aggregateUplinkFMbps = 0;
-  double aggregateUplinkGMbps = 0;
-
-  double rxSensitivity = -91.0;
-
-  std::string result_filename = "result.csv";
-
-
-ApplicationContainer uplinkServerApps;
-ApplicationContainer downlinkServerApps;
-ApplicationContainer uplinkClientApps;
-ApplicationContainer downlinkClientApps;
-
-NodeContainer allNodes;
-
-uint32_t nAssociatedStas = 0;
-bool allStasAssociated = false;
-std::vector<uint32_t> nAssociatedStasPerBss (0);
-
-struct SignalArrival
-{
-  Time m_time;
-  Time m_duration;
-  bool m_wifi;
-  uint32_t m_nodeId;
-  uint32_t m_senderNodeId;
-  double m_power;
-};
 uint32_t
 ContextToNodeId (std::string context)
 {
@@ -229,213 +101,6 @@ AddServer (ApplicationContainer &serverApps, UdpServerHelper &server, Ptr<Node> 
 }
 
 void
-AddbaStateCb (std::string context, Time t, Mac48Address recipient, uint8_t tid, OriginatorBlockAckAgreement::State state)
-{
-std::cout << "AddbaStateCb" << std::endl;
-  bool isAp = false;
-  for (uint32_t bss = 1; bss <= nBss; bss++)
-  {
-    if (ContextToNodeId (context) == (((bss - 1) * n) + bss - 1))
-    {
-      isAp = true;
-    }
-  }
-  if (state == OriginatorBlockAckAgreement::ESTABLISHED)
-    {
-      if ((aggregateDownlinkAMbps != 0) && (aggregateUplinkAMbps != 0)) //UP + DL
-        {
-          nEstablishedAddaBa++;
-          if (nEstablishedAddaBa == 2 * n * nBss)
-            {
-              allAddBaEstablished = true;
-              timeAllAddBaEstablished = t;
-              if (filterOutNonAddbaEstablished)
-                {
-                  Simulator::Stop (Seconds (simulationTime));
-                  for (auto it = uplinkClientApps.Begin (); it != uplinkClientApps.End (); ++it)
-                    {
-                      Ptr<UdpClient> client = DynamicCast<UdpClient> (*it);
-                      client->SetAttribute ("MaxPackets", UintegerValue (4294967295u));
-                    }
-                  for (auto it = downlinkClientApps.Begin (); it != downlinkClientApps.End (); ++it)
-                    {
-                      Ptr<UdpClient> client = DynamicCast<UdpClient> (*it);
-                      client->SetAttribute ("MaxPackets", UintegerValue (4294967295u));
-                    }
-                }
-            }
-        }
-      else if (((aggregateDownlinkAMbps != 0) && isAp) || ((aggregateUplinkAMbps != 0) && !isAp)) //UL or DL
-        {
-          nEstablishedAddaBa++;
-          if (nEstablishedAddaBa == n * nBss)
-            {
-              allAddBaEstablished = true;
-              timeAllAddBaEstablished = t;
-              if (filterOutNonAddbaEstablished)
-                {
-                  Simulator::Stop (Seconds (simulationTime));
-                  for (auto it = uplinkClientApps.Begin (); it != uplinkClientApps.End (); ++it)
-                    {
-                      Ptr<UdpClient> client = DynamicCast<UdpClient> (*it);
-                      client->SetAttribute ("MaxPackets", UintegerValue (4294967295u));
-                    }
-                  for (auto it = downlinkClientApps.Begin (); it != downlinkClientApps.End (); ++it)
-                    {
-                      Ptr<UdpClient> client = DynamicCast<UdpClient> (*it);
-                      client->SetAttribute ("MaxPackets", UintegerValue (4294967295u));
-                    }
-                }
-            }
-        }
-    }
-  else if (state == OriginatorBlockAckAgreement::RESET)
-    {
-      //Make sure ADDBA establishment will be restarted
-      Ptr<UdpClient> client;
-      if (isAp && (aggregateDownlinkAMbps != 0))
-        {
-          //TODO: only do this for the recipient
-          for (uint32_t i = 0; i < n; i++)
-            {
-              client = DynamicCast<UdpClient> (allNodes.Get (ContextToNodeId (context))->GetApplication (i));
-              NS_ASSERT (client != 0);
-              client->SetAttribute ("MaxPackets", UintegerValue (1));
-            }
-        }
-      if (!isAp && (aggregateUplinkAMbps != 0))
-        {
-          client = DynamicCast<UdpClient> (allNodes.Get (ContextToNodeId (context))->GetApplication (0));
-          NS_ASSERT (client != 0);
-          client->SetAttribute ("MaxPackets", UintegerValue (1));
-        }
-    }
-//std::cout<<"Addbacb"<<std::endl;
-}
-
-void
-StaAssocCb (std::string context, Mac48Address bssid)
-{
-std::cout << "StaAssocCb" << std::endl;
-  uint32_t nodeId = ContextToNodeId (context);
-  uint32_t appId = 0;
-  uint32_t bss = 1;
-  // Determine application ID from node ID
-  for (; bss <= nBss; bss++)
-    {
-      if (nodeId <= (bss * n) + bss - 1)
-        {
-          appId = nodeId - bss;
-          break;
-        }
-    }
-  nAssociatedStasPerBss[bss - 1]++;
-  if (nAssociatedStasPerBss[bss - 1] == n)
-/* error: ‘apDeviceA’ was not declared in this scope brabra...
-   {
-      // All STAs of this BSS are associated, we can extend beacon interval if bianchi flag is enabled
-      Ptr<WifiNetDevice> apDevice;
-      if (bss == 1)
-        {
-          apDevice = apDeviceA.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else if (bss == 2)
-        {
-          apDevice = apDeviceB.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else if (bss == 3)
-        {
-          apDevice = apDeviceC.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else if (bss == 4)
-        {
-          apDevice = apDeviceD.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else if (bss == 5)
-        {
-          apDevice = apDeviceE.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else if (bss == 6)
-        {
-          apDevice = apDeviceF.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      else //bss == 7
-        {
-          apDevice = apDeviceG.Get (0)->GetObject<WifiNetDevice> ();
-        }
-      Ptr<ApWifiMac> apWifiMac = apDevice->GetMac ()->GetObject<ApWifiMac> ();
-      apWifiMac->SetAttribute ("BeaconInterval", TimeValue (MicroSeconds (beaconInterval)));
-    }*/
-  if (filterOutNonAddbaEstablished)
-    {
-      // Here, we make sure that there is at least one packet in the queue after association (paquets queued before are dropped)
-      Ptr<UdpClient> client;
-      if (aggregateUplinkAMbps != 0)
-        {
-          client = DynamicCast<UdpClient> (uplinkClientApps.Get(appId));
-          client->SetAttribute ("MaxPackets", UintegerValue (1));
-        }
-      if (aggregateDownlinkAMbps != 0)
-        {
-          client = DynamicCast<UdpClient> (downlinkClientApps.Get(appId));
-          client->SetAttribute ("MaxPackets", UintegerValue (1));
-        }
-    }
-  nAssociatedStas++;
-  if (nAssociatedStas == (n * nBss))
-    {
-      allStasAssociated = true;
-      if (!filterOutNonAddbaEstablished)
-        {
-          Simulator::Stop (Seconds (simulationTime));
-        }
-    }
-}
-
-void
-SaveSpatialReuseStats (const std::string filename)
-{
-  std::ofstream outFile;
-  outFile.open (filename.c_str (), std::ofstream::out | std::ofstream::trunc);
-  outFile.setf (std::ios_base::fixed);
-  outFile.flush ();
-
-  if (!outFile.is_open ())
-    {
-      NS_LOG_ERROR ("Can't open file " << filename);
-      return;
-    }
-
-  uint32_t numNodes = packetsReceived.size ();
-
-
-  
- 
-  outFile << "Avg. RSSI:" << std::endl;
-  for (uint32_t rxNodeId = 0; rxNodeId < numNodes; rxNodeId++)
-    {
-      for (uint32_t txNodeId = 0; txNodeId < numNodes; txNodeId++)
-        {
-          uint64_t pkts = packetsReceivedPerNode[rxNodeId][txNodeId];
-          double rssi = rssiPerNode[rxNodeId][txNodeId];
-          double avgRssi = 0.0;
-          if (pkts > 0)
-            {
-              avgRssi = rssi / pkts;
-            }
-          outFile << avgRssi << "  ";
-        }
-      outFile << std::endl;
-    }
-
-
-  outFile.close ();
-
-  std::cout << "Spatial Reuse Stats written to: " << filename << std::endl;
-
-}
-
-void
 PacketRx (std::string context, const Ptr<const Packet> p, const Address &srcAddress,
           const Address &destAddress)
 {
@@ -445,44 +110,86 @@ PacketRx (std::string context, const Ptr<const Packet> p, const Address &srcAddr
   packetsReceived[nodeId]++;
 }
 
-bool g_logArrivals = false;
-std::vector<SignalArrival> g_arrivals;
-double g_arrivalsDurationCounter = 0;
-
-void
-SignalCb (std::string context, bool wifi, uint32_t senderNodeId, double rxPowerDbm, Time rxDuration)
-{
-//std::cout << "SignalCb start" << std::endl;
-  if (g_logArrivals)
-    {
-      SignalArrival arr;
-      arr.m_time = Simulator::Now ();
-      arr.m_duration = rxDuration;
-      arr.m_nodeId = ContextToNodeId (context);
-      arr.m_senderNodeId = senderNodeId;
-      arr.m_wifi = wifi;
-      arr.m_power = rxPowerDbm;
-      g_arrivals.push_back (arr);
-      g_arrivalsDurationCounter += rxDuration.GetSeconds ();
-    }
-
-  NS_LOG_DEBUG (context << " " << wifi << " " << senderNodeId << " " << rxPowerDbm << " " << rxDuration.GetSeconds () / 1000.0);
-  uint32_t nodeId = ContextToNodeId (context);
-
-  packetsReceivedPerNode[nodeId][senderNodeId] += 1;
-//std::cout << "SignalCb..." << std::endl;
-  rssiPerNode[nodeId][senderNodeId] += rxPowerDbm;
-//std::cout<<"Side "<<std::endl;
-//std::cout << "SignalCb end" << std::endl;
-}
-
-
 int
 main (int argc, char *argv[])
 {
 
 
+  uint32_t payloadSize = 1472; // bytes
+  double simulationTime = 20; // seconds
+  double distance = 10; // meters
+  double interBssDistance = 50; // meters
+  double txMaskInnerBandMinimumRejection = -40.0; // dBr
+  double txMaskOuterBandMinimumRejection = -56.0; // dBr
+  double txMaskOuterBandMaximumRejection = -80.0; // dBr
 
+  uint16_t channelBss=36;
+  uint16_t channelBssA = 36;
+  uint16_t channelBssB = 36;
+  uint16_t channelBssC = 36;
+  uint16_t channelBssD = 36;
+  uint16_t channelBssE = 36;
+  uint16_t channelBssF = 36;
+  uint16_t channelBssG = 36;
+
+uint16_t primaryChannelBss=36;
+  uint16_t primaryChannelBssA = 36;
+  uint16_t primaryChannelBssB = 36;
+  uint16_t primaryChannelBssC = 36;
+  uint16_t primaryChannelBssD = 36;
+  uint16_t primaryChannelBssE = 36;
+  uint16_t primaryChannelBssF = 36;
+  uint16_t primaryChannelBssG = 36;
+
+  std::string mcs ="IdealWifi";
+  std::string mcs1 = "IdealWifi";
+  std::string mcs2 = "IdealWifi";
+  std::string mcs3 = "IdealWifi";
+  std::string mcs4 = "IdealWifi";
+  std::string mcs5 = "IdealWifi";
+  std::string mcs6 = "IdealWifi";
+  std::string mcs7 = "IdealWifi";
+
+  double ccaEdThresholdPrimaryBss = -62.0;
+  double constantCcaEdThresholdSecondaryBss = -62.0;
+  double ccaEdThresholdPrimaryBssA = -62.0;
+  double constantCcaEdThresholdSecondaryBssA = -62.0;
+  double ccaEdThresholdPrimaryBssB = -62.0;
+  double constantCcaEdThresholdSecondaryBssB = -62.0;
+  double ccaEdThresholdPrimaryBssC = -62.0;
+  double constantCcaEdThresholdSecondaryBssC = -62.0;
+  double ccaEdThresholdPrimaryBssD = -62.0;
+  double constantCcaEdThresholdSecondaryBssD = -62.0;
+  double ccaEdThresholdPrimaryBssE = -62.0;
+  double constantCcaEdThresholdSecondaryBssE = -62.0;
+  double ccaEdThresholdPrimaryBssF = -62.0;
+  double constantCcaEdThresholdSecondaryBssF = -62.0;
+  double ccaEdThresholdPrimaryBssG = -62.0;
+  double constantCcaEdThresholdSecondaryBssG = -62.0;
+
+  double aggregateDownlinkAMbps = 0;
+  double aggregateDownlinkBMbps = 0;
+  double aggregateDownlinkCMbps = 0;
+  double aggregateDownlinkDMbps = 0;
+  double aggregateDownlinkEMbps = 0;
+  double aggregateDownlinkFMbps = 0;
+  double aggregateDownlinkGMbps = 0;
+
+
+  double aggregateUplinkAMbps = 0;
+  double aggregateUplinkBMbps = 0;
+  double aggregateUplinkCMbps = 0;
+  double aggregateUplinkDMbps = 0;
+  double aggregateUplinkEMbps = 0;
+  double aggregateUplinkFMbps = 0;
+  double aggregateUplinkGMbps = 0;
+
+  std::string channelBondingType = "ConstantThreshold";
+  std::string Test = "";
+
+  uint16_t n = 1;
+  uint16_t nBss = 1;
+  uint32_t maxMissedBeacons = 4294967295;
   CommandLine cmd;
 
   cmd.AddValue ("payloadSize", "Payload size in bytes", payloadSize);
@@ -520,10 +227,6 @@ main (int argc, char *argv[])
   cmd.AddValue ("channelBondingType",
                 "The channel bonding type: Static, ConstantThreshold or DynamicThreshold",
                 channelBondingType);
-
-  cmd.AddValue ("ccaSdThreshold",
-                "The Wifi signal detection threshold",
-                ccaSdThreshold);
 
   cmd.AddValue ("ccaEdThresholdPrimaryBssA",
                 "The energy detection threshold on the primary channel for BSS A",
@@ -593,9 +296,6 @@ main (int argc, char *argv[])
   cmd.AddValue ("mcs6", "MCS6", mcs6);
   cmd.AddValue ("mcs7", "MCS7", mcs7);
 
-  cmd.AddValue ("rxSensitivity", "Receiver Sensitivity (dBm)", rxSensitivity);
-
-  cmd.AddValue ("result_filename", "Output throughput to this file", result_filename);
 
   cmd.Parse (argc, argv);
 
@@ -628,9 +328,6 @@ NodeContainer wifiStaNodes;
   NodeContainer wifiStaNodesF;
   NodeContainer wifiStaNodesG;
 
-//add
-  packetsReceivedPerNode.resize (numNodes, std::vector<uint64_t> (numNodes, 0));
-  rssiPerNode.resize (numNodes, std::vector<double> (numNodes, 0.0));
 
 
   double perNodeUplinkAMbps = aggregateUplinkAMbps / n;
@@ -667,7 +364,6 @@ NodeContainer wifiStaNodes;
   double perNodeDownlinkGMbps = aggregateDownlinkGMbps / n;
   Time intervalUplinkG = MicroSeconds (payloadSize * 8 / perNodeUplinkGMbps);
   Time intervalDownlinkG = MicroSeconds (payloadSize * 8 / perNodeDownlinkGMbps);
-
 
   wifiStaNodesA.Create (n);
 
@@ -717,8 +413,8 @@ NodeContainer wifiStaNodes;
 //                           interBssDistance / 2};
  // double apPositionY[7] = {0, sqrt (3) / 2 * interBssDistance,  sqrt (3) / 2 * interBssDistance,
   //                         0, -sqrt (3) / 2 * interBssDistance, -sqrt (3) / 2 * interBssDistance};
- double apPositionX[7] = {-interBssDistance,0,0,interBssDistance,interBssDistance,-interBssDistance};
- double apPositionY[7] = {0,0,0,0,interBssDistance,interBssDistance,interBssDistance};
+ double apPositionX[7] = {0,interBssDistance,interBssDistance*2,interBssDistance*2,interBssDistance,-interBssDistance};
+ double apPositionY[7] = {0,0,0,interBssDistance,interBssDistance,interBssDistance,interBssDistance};
  for (uint8_t i = 0; i < nBss; i++)
     {
       positionAlloc->Add (Vector (apPositionX[i], apPositionY[i], 0.0));
@@ -1051,8 +747,8 @@ InterferenceVal7=maxSecInterference7;
   unitDiscPositionAllocator1->AssignStreams (streamNumber);
   // AP1 is at origin (x=x1, y=y1), with radius Rho=r
   unitDiscPositionAllocator1->SetX (apPositionX[0]);
-  unitDiscPositionAllocator1->SetY (distance);
-  unitDiscPositionAllocator1->SetRho (0);
+  unitDiscPositionAllocator1->SetY (apPositionY[0]);
+  unitDiscPositionAllocator1->SetRho (distance);
   for (uint32_t i = 0; i < n; i++)
     {
       Vector v = unitDiscPositionAllocator1->GetNext ();
@@ -1067,8 +763,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator2->AssignStreams (streamNumber + 1);
       // AP2 is at origin (x=x2, y=y2), with radius Rho=r
       unitDiscPositionAllocator2->SetX (apPositionX[1]);
-      unitDiscPositionAllocator2->SetY (distance);
-      unitDiscPositionAllocator2->SetRho (0);
+      unitDiscPositionAllocator2->SetY (apPositionY[1]);
+      unitDiscPositionAllocator2->SetRho (distance);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator2->GetNext ();
@@ -1085,8 +781,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator3->AssignStreams (streamNumber + 2);
       // AP3 is at origin (x=x3, y=y3), with radius Rho=r
       unitDiscPositionAllocator3->SetX (apPositionX[2]);
-      unitDiscPositionAllocator3->SetY (distance);
-      unitDiscPositionAllocator3->SetRho (0);
+      unitDiscPositionAllocator3->SetY (apPositionY[2]);
+      unitDiscPositionAllocator3->SetRho (distance);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator3->GetNext ();
@@ -1103,8 +799,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator4->AssignStreams (streamNumber + 3);
       // AP4 is at origin (x=x4, y=y4), with radius Rho=r
       unitDiscPositionAllocator4->SetX (apPositionX[3]);
-      unitDiscPositionAllocator4->SetY (distance);
-      unitDiscPositionAllocator4->SetRho (0);
+      unitDiscPositionAllocator4->SetY (apPositionY[3]);
+      unitDiscPositionAllocator4->SetRho (distance);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator4->GetNext ();
@@ -1120,8 +816,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator5->AssignStreams (streamNumber + 4);
       // AP5 is at origin (x=x5, y=y5), with radius Rho=r
       unitDiscPositionAllocator5->SetX (apPositionX[4]);
-      unitDiscPositionAllocator5->SetY (distance);
-      unitDiscPositionAllocator5->SetRho (0);
+      unitDiscPositionAllocator5->SetY (apPositionY[4]);
+      unitDiscPositionAllocator5->SetRho (distance);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator5->GetNext ();
@@ -1197,9 +893,6 @@ InterferenceVal7=maxSecInterference7;
   SpectrumWifiPhyHelper phy = SpectrumWifiPhyHelper::Default ();
   phy.Set ("TxPowerStart", DoubleValue (TxP));
   phy.Set ("TxPowerEnd", DoubleValue (TxP));
-  phy.SetPreambleDetectionModel ("ns3::ThresholdPreambleDetectionModel","Threshold", DoubleValue (0));
-  phy.SetPreambleDetectionModel ("ns3::ThresholdPreambleDetectionModel","MinimumRssi", DoubleValue (ccaSdThreshold));
-//  phy.Set ("RxSensitivity", DoubleValue (rxSensitivity));
 
   Ptr<MultiModelSpectrumChannel> channel = CreateObject<MultiModelSpectrumChannel> ();
   Ptr<LogDistancePropagationLossModel> lossModel = CreateObject<LogDistancePropagationLossModel> ();
@@ -2294,41 +1987,20 @@ else
         }
     }
 
-
   Config::Connect ("/NodeList/*/ApplicationList/*/$ns3::UdpServer/RxWithAddresses",
                    MakeCallback (&PacketRx));
-/*
-   phy.EnablePcap ("staA_pcap", staDeviceA);
-  phy.EnablePcap ("apA_pcap", apDeviceA);
+
+  // phy.EnablePcap ("staA_pcap", staDeviceA);
+ // phy.EnablePcap ("apA_pcap", apDeviceA);
+  /*
 phy.EnablePcap ("staB_pcap", staDeviceB);
 phy.EnablePcap ("apB_pcap", apDeviceB);
 phy.EnablePcap ("staC_pcap", staDeviceC);
 phy.EnablePcap ("apC_pcap", apDeviceC);
-phy.EnablePcap ("staD_pcap", staDeviceD);
-phy.EnablePcap ("apD_pcap", apDeviceD);
 */
-/*
-std::cout << "staA:" <<  wifiStaNodesA << std::endl;
-std::cout << "staB:" <<  wifiStaNodesB << std::endl;
-std::cout << "staC:" <<  wifiStaNodesC << std::endl;
-std::cout << "staD:" <<  wifiStaNodesD << std::endl;
- */
-
-  Config::Connect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Phy/$ns3::SpectrumWifiPhy/SignalArrival", MakeCallback (&SignalCb));
-//  Config::Connect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Mac/$ns3::RegularWifiMac/BE_Txop/BlockAckManager/AgreementState", MakeCallback (&AddbaStateCb));
-//  Config::Connect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Mac/$ns3::StaWifiMac/Assoc", MakeCallback (&StaAssocCb));
 
   Simulator::Stop (Seconds (simulationTime + 1));
   Simulator::Run ();
-
-  Config::Disconnect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Phy/$ns3::SpectrumWifiPhy/SignalArrival", MakeCallback (&SignalCb));
-//  Config::Disconnect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Mac/$ns3::RegularWifiMac/BE_Txop/BlockAckManager/AgreementState", MakeCallback (&AddbaStateCb));
-//  Config::Disconnect ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Mac/$ns3::StaWifiMac/Assoc", MakeCallback (&StaAssocCb));
-
-  // Save spatial reuse statistics to an output file
-  SaveSpatialReuseStats ("RSSI_file.dat");
-
-
 
   Simulator::Destroy ();
   // allocate in the order of AP_A, STAs_A, AP_B, STAs_B
@@ -2344,38 +2016,17 @@ std::cout << "staD:" <<  wifiStaNodesD << std::endl;
       return 1;
     }
 
-  double rxThroughputPerNode[numNodes];  
-
-  for (uint32_t k = 0; k < numNodes; k++) // k < numNodes to k < 4
+  double rxThroughputPerNode[numNodes];
+  // output for all nodes
+  for (uint32_t k = 0; k < numNodes; k++)
     {
       double bitsReceived = bytesReceived[k] * 8;
       rxThroughputPerNode[k] = static_cast<double> (bitsReceived) / 1e6 / simulationTime;
-      std::cout << "Node, " << k << ", pkts, " << packetsReceived[k] << ", bytes, " << bytesReceived[k]
-                << ", throughput [MMb/s], " << rxThroughputPerNode[k] << std::endl;
+      std::cout << "Node " << k << ", pkts " << packetsReceived[k] << ", bytes " << bytesReceived[k]
+                << ", throughput [MMb/s] " << rxThroughputPerNode[k] << std::endl;
           TputFile << rxThroughputPerNode[k] << std::endl;
 
     }
-
-
-//output throughput---------------------------------------------------------------
-  std::ofstream resultcsv(result_filename ,std::ios::app);
-  for(uint32_t k = 0; k < numNodes; k++){
-    resultcsv << rxThroughputPerNode[k] << "," ;
-  }
-  resultcsv << std::endl;
-  resultcsv.close();
-//--------------------------------------------------------------------------------
-
-
-
-/*
-//output distance end throughput to csv file--------------------------------------
-  std::ofstream distance_throughput("distance_throughput.csv",std::ios::app);
-  distance_throughput << distance << "," << rxThroughputPerNode[0] << std::endl;
-  distance_throughput.close();
-//--------------------------------------------------------------------------------
-*/
-
 
   TputFile << std::endl;
   TputFile.close ();
