@@ -11,7 +11,7 @@ channelBssB=36
 channelBssC=144
 channelBssD=1
 channelBssE=36
-channelBssF=1
+channelBssF=144
 channelBssG=144
 
 primaryChannelBssA=1
@@ -19,7 +19,7 @@ primaryChannelBssB=36
 primaryChannelBssC=144
 primaryChannelBssD=1
 primaryChannelBssE=36
-primaryChannelBssF=1
+primaryChannelBssF=144
 primaryChannelBssG=144
 
 mcs1=VhtMcs0
@@ -47,13 +47,13 @@ ccaEdThresholdSecondaryBssF=-62.0
 ccaEdThresholdPrimaryBssG=-62.0
 ccaEdThresholdSecondaryBssG=-62.0
 
-downlinkA=100
+downlinkA=0
 downlinkB=100
 downlinkC=100
 downlinkD=100
 downlinkE=100
 downlinkF=100
-downlinkG=100
+downlinkG=0
 
 
 uplinkA=0
@@ -62,7 +62,7 @@ uplinkC=0
 uplinkD=100
 uplinkE=100
 uplinkF=100
-uplinkG=100
+uplinkG=0
 
 channelBondingType="ConstantThreshold"
 Test=""
@@ -72,9 +72,9 @@ nBss=7
 
 rxSensitivity=-100
 
-result_filename=EDdownlinkforSDED.csv
+result_filename=EDforSDEDED.csv
 
-for ccaSdThreshold in -82 -62;
+for ccaSdThreshold in -62;
 do
 for mcs in VhtMcs0 VhtMcs8;
 do
