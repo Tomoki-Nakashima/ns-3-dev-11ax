@@ -153,6 +153,7 @@ uint16_t primaryChannelBss=36;
 
   double rxSensitivity = -91.0;
 
+  std::string position_filename = "position.csv";
   std::string result_filename = "result.csv";
 
 
@@ -595,6 +596,7 @@ main (int argc, char *argv[])
 
   cmd.AddValue ("rxSensitivity", "Receiver Sensitivity (dBm)", rxSensitivity);
 
+  cmd.AddValue ("position_filename", "Output positions to this file", position_filename);
   cmd.AddValue ("result_filename", "Output throughput to this file", result_filename);
 
   cmd.Parse (argc, argv);
@@ -719,6 +721,11 @@ NodeContainer wifiStaNodes;
   //                         0, -sqrt (3) / 2 * interBssDistance, -sqrt (3) / 2 * interBssDistance};
 
 
+//output position-----------------------------------------------------------------
+  std::ofstream positioncsv(position_filename ,std::ios::app);
+//--------------------------------------------------------------------------------
+  
+
  double apPositionX[7] = {0,0,0,interBssDistance,0,-interBssDistance,0};
  double apPositionY[7] = {0,0,0,0,interBssDistance,0,-interBssDistance};
  for (uint8_t i = 0; i < nBss; i++)
@@ -726,6 +733,8 @@ NodeContainer wifiStaNodes;
       positionAlloc->Add (Vector (apPositionX[i], apPositionY[i], 0.0));
       maxMcsNode[i] = 0;
       std::cout << "AP" << +i << "=(" <<  apPositionX[i] << ", " << apPositionY[i] << ")" << std::endl;
+      positioncsv << "AP" << +i << ", " <<  apPositionX[i] << ", " <<  apPositionY[i] << std::endl;
+
     }
 
 
@@ -1063,6 +1072,7 @@ InterferenceVal7=maxSecInterference7;
       positionAlloc->Add (v[i]);
       maxMcsNode[i + nBss] = selectMCS (Vector (v[i].x - apPositionX[0], v[i].y - apPositionY[0], v[i].z),InterferenceVal1);
       std::cout << "STA" << +i << " for AP1" << "=(" <<  v[i].x << ", " << v[i].y << ")" << std::endl;
+      positioncsv << "STA" << +i << " for AP1" << ", " <<  v[i].x << ", " <<  v[i].y << std::endl;
     }
 
   if (nBss > 1)
@@ -1081,6 +1091,7 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 1] =
               selectMCS (Vector (v[i].x - apPositionX[1], v[i].y - apPositionY[1], v[i].z),InterferenceVal2);
           std::cout << "STA" << +i << " for AP2" << "=(" <<  v[i].x << ", " << v[i].y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP2" << ", " <<  v[i].x << ", " <<  v[i].y << std::endl;
         }
     }
 
@@ -1100,6 +1111,7 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 2] =
               selectMCS (Vector (v[i].x - apPositionX[2], v[i].y - apPositionY[2], v[i].z),InterferenceVal3);
           std::cout << "STA" << +i << " for AP3" << "=(" <<  v[i].x << ", " << v[i].y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP3" << ", " <<  v[i].x << ", " <<  v[i].y << std::endl;
         }
     }
 
@@ -1119,6 +1131,7 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 3] =
               selectMCS (Vector (v.x - apPositionX[3], v.y - apPositionY[3], v.z),InterferenceVal4);
           std::cout << "STA" << +i << " for AP4" << "=(" <<  v.x << ", " << v.y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP4" << ", " <<  v.x << ", " <<  v.y << std::endl;
         }
     }
   if (nBss > 4)
@@ -1137,6 +1150,7 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 4] =
               selectMCS (Vector (v.x - apPositionX[4], v.y - apPositionY[4], v.z),InterferenceVal5);
           std::cout << "STA" << +i << " for AP5" << "=(" <<  v.x << ", " << v.y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP5" << ", " <<  v.x << ", " <<  v.y << std::endl;
         }
     }
   if (nBss > 5)
@@ -1155,6 +1169,7 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 5] =
               selectMCS (Vector (v.x - apPositionX[5], v.y - apPositionY[5], v.z),InterferenceVal6);
           std::cout << "STA" << +i << " for AP6" << "=(" <<  v.x << ", " << v.y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP6" << ", " <<  v.x << ", " <<  v.y << std::endl;
         }
     }
   if (nBss > 6)
@@ -1173,8 +1188,16 @@ InterferenceVal7=maxSecInterference7;
           maxMcsNode[i + nBss + n * 6] =
               selectMCS (Vector (v.x - apPositionX[6], v.y - apPositionY[6], v.z),InterferenceVal7);
           std::cout << "STA" << +i << " for AP7" << "=(" <<  v.x << ", " << v.y << ")" << std::endl;
+          positioncsv << "STA" << +i << " for AP7" << ", " <<  v.x << ", " <<  v.y << std::endl;
         }
     }
+
+
+//output position-----------------------------------------------------------------
+  positioncsv << std::endl;
+  positioncsv.close();
+//--------------------------------------------------------------------------------
+
 
   mobility.SetPositionAllocator (positionAlloc);
   NodeContainer allNodes = NodeContainer (wifiApNodes, wifiStaNodesA);
@@ -2376,7 +2399,6 @@ std::cout << "staD:" <<  wifiStaNodesD << std::endl;
   resultcsv << std::endl;
   resultcsv.close();
 //--------------------------------------------------------------------------------
-
 
 
 /*
