@@ -68,13 +68,13 @@ channelBondingType="ConstantThreshold"
 Test=""
 
 n=10
-nBss=7
+nBss=6
 
 rxSensitivity=-100
 
-result_filename=EDforSDEDED.csv
+result_filename=result.csv
 
-for ccaSdThreshold in -62;
+for ccaSdThreshold in -82;
 do
 for mcs in VhtMcs0;
 do
