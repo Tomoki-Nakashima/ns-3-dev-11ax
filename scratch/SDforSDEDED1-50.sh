@@ -47,9 +47,9 @@ ccaEdThresholdSecondaryBssF=-62.0
 ccaEdThresholdPrimaryBssG=-62.0
 ccaEdThresholdSecondaryBssG=-62.0
 
-downlinkA=0
-downlinkB=100
-downlinkC=100
+downlinkA=100
+downlinkB=0
+downlinkC=0
 downlinkD=100
 downlinkE=100
 downlinkF=100
@@ -72,10 +72,10 @@ nBss=7
 
 rxSensitivity=-100
 
-result_filename=EDforSDEDED.csv
-position_filename=EDforSDEDED_position.csv
+result_filename=SDforSDEDED1-51.csv
+position_filename=SDforSDEDED_position1-51.csv
 
-for ccaSdThreshold in -62;
+for ccaSdThreshold in -82;
 do
 for mcs in VhtMcs0 VhtMcs8;
 do
