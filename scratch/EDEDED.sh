@@ -48,11 +48,11 @@ ccaEdThresholdPrimaryBssG=-62.0
 ccaEdThresholdSecondaryBssG=-62.0
 
 downlinkA=100
-downlinkB=0
-downlinkC=0
+downlinkB=100
+downlinkC=100
 downlinkD=100
-downlinkE=0
-downlinkF=0
+downlinkE=100
+downlinkF=100
 downlinkG=0
 
 
@@ -60,8 +60,8 @@ uplinkA=0
 uplinkB=0
 uplinkC=0
 uplinkD=100
-uplinkE=0
-uplinkF=0
+uplinkE=100
+uplinkF=100
 uplinkG=0
 
 channelBondingType="ConstantThreshold"
@@ -72,10 +72,10 @@ nBss=6
 
 rxSensitivity=-100
 
-result_filename=SDforSDEDED.csv
-position_filename=SDforSDEDED_position.csv
+result_filename=EDEDED.csv
+position_filename=EDEDED_position.csv
 
-for ccaSdThreshold in -82;
+for ccaSdThreshold in -62;
 do
 for mcs in VhtMcs0 VhtMcs8;
 do
