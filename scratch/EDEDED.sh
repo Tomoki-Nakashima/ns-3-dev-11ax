@@ -47,10 +47,10 @@ ccaEdThresholdSecondaryBssF=-62.0
 ccaEdThresholdPrimaryBssG=-62.0
 ccaEdThresholdSecondaryBssG=-62.0
 
-downlinkA=0
+downlinkA=100
 downlinkB=100
 downlinkC=100
-downlinkD=0
+downlinkD=100
 downlinkE=100
 downlinkF=100
 downlinkG=0
@@ -59,7 +59,7 @@ downlinkG=0
 uplinkA=0
 uplinkB=0
 uplinkC=0
-uplinkD=0
+uplinkD=100
 uplinkE=100
 uplinkF=100
 uplinkG=0
@@ -72,8 +72,8 @@ nBss=6
 
 rxSensitivity=-100
 
-result_filename=EDforSDEDED.csv
-position_filename=EDforSDEDED_position.csv
+result_filename=EDEDED.csv
+position_filename=EDEDED_position.csv
 
 for ccaSdThreshold in -62;
 do

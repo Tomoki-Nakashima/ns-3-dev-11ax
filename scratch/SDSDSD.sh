@@ -77,7 +77,7 @@ position_filename=SDSDSD_position.csv
 
 for ccaSdThreshold in -82;
 do
-for mcs in VhtMcs0 VhtMcs8;
+for mcs in IdealWifi;
 do
 for x in {0..199};
 do
