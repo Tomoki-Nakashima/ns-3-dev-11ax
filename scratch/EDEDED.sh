@@ -22,13 +22,13 @@ primaryChannelBssE=36
 primaryChannelBssF=144
 primaryChannelBssG=144
 
-mcs1=VhtMcs0
-mcs2=VhtMcs0
-mcs3=VhtMcs0
-mcs4=VhtMcs0
-mcs5=VhtMcs0
-mcs6=VhtMcs0
-mcs7=VhtMcs0
+mcs1=IdealWifi
+mcs2=IdealWifi
+mcs3=IdealWifi
+mcs4=IdealWifi
+mcs5=IdealWifi
+mcs6=IdealWifi
+mcs7=IdealWifi
 
 ccaSdThreshold=-62
 
