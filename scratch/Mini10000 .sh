@@ -72,9 +72,9 @@ nBss=4
 
 rxSensitivity=-100
 
-result_filename=DownlinkforFullMini.csv
+result_filename=MiniMCS0to8_100.csv
 
-for ccaSdThreshold in -82 -62;
+for ccaSdThreshold in -62;
 do
 for mcs in VhtMcs0 VhtMcs1 VhtMcs2 VhtMcs3 VhtMcs4 VhtMcs5 VhtMcs6 VhtMcs7 VhtMcs8;
 do
