@@ -72,11 +72,11 @@ nBss=4
 
 rxSensitivity=-100
 
-result_filename=FullMCS0to8_100.csv
+result_filename=dynamicMCS2_100.csv
 
-for ccaSdThreshold in -82;
+for ccaSdThreshold in -70.41186219;
 do
-for mcs in VhtMcs0 VhtMcs1 VhtMcs2 VhtMcs3 VhtMcs4 VhtMcs5 VhtMcs6 VhtMcs7 VhtMcs8;
+for mcs in VhtMcs2;
 do
 for RngRun in {1..100};
 do

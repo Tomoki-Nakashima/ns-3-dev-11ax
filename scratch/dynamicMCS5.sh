@@ -72,11 +72,11 @@ nBss=4
 
 rxSensitivity=-100
 
-result_filename=MiniMCS0to8_100.csv
+result_filename=dynamicMCS5_100.csv
 
-for ccaSdThreshold in -62;
+for ccaSdThreshold in -79.03107549;
 do
-for mcs in VhtMcs0 VhtMcs1 VhtMcs2 VhtMcs3 VhtMcs4 VhtMcs5 VhtMcs6 VhtMcs7 VhtMcs8;
+for mcs in VhtMcs5;
 do
 for RngRun in {1..100};
 do
