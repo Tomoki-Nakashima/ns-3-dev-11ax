@@ -1,7 +1,7 @@
 payloadSize=1472 # bytes
 simulationTime=100 # seconds
 distance=5 # meters
-interBssDistance=10 # meters
+interBssDistance=15 # meters
 txMaskInnerBandMinimumRejection=-40.0 # dBr
 txMaskOuterBandMinimumRejection=-56.0 # dBr
 txMaskOuterBandMaximumRejection=-80.0 # dBr

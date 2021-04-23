@@ -723,6 +723,7 @@ NodeContainer wifiStaNodes;
     {
       positionAlloc->Add (Vector (apPositionX[i], apPositionY[i], 0.0));
       maxMcsNode[i] = 0;
+      std::cout << "AP postition: (" << apPositionX[i] << ", " << apPositionY[i] << ")" << std::endl;
     }
 
 
@@ -1055,7 +1056,9 @@ InterferenceVal7=maxSecInterference7;
   unitDiscPositionAllocator1->SetRho (0);
   for (uint32_t i = 0; i < n; i++)
     {
+      unitDiscPositionAllocator1->SetY (distance*std::pow(-1,i));
       Vector v = unitDiscPositionAllocator1->GetNext ();
+      std::cout << "AP1 sta: (" << v.x << ", " << v.y << ")" << std::endl;
       positionAlloc->Add (v);
       maxMcsNode[i + nBss] = selectMCS (Vector (v.x - apPositionX[0], v.y - apPositionY[0], v.z),InterferenceVal1);
     }
@@ -1071,7 +1074,9 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator2->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
+          unitDiscPositionAllocator2->SetY (distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator2->GetNext ();
+          std::cout << "AP2 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
           maxMcsNode[i + nBss + n * 1] =
               selectMCS (Vector (v.x - apPositionX[1], v.y - apPositionY[1], v.z),InterferenceVal2);
@@ -1089,7 +1094,9 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator3->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
+          unitDiscPositionAllocator3->SetY (distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator3->GetNext ();
+          std::cout << "AP3 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
           maxMcsNode[i + nBss + n * 2] =
               selectMCS (Vector (v.x - apPositionX[2], v.y - apPositionY[2], v.z),InterferenceVal3);
@@ -1107,7 +1114,9 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator4->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
+          unitDiscPositionAllocator4->SetY (distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator4->GetNext ();
+          std::cout << "AP4 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
           maxMcsNode[i + nBss + n * 3] =
               selectMCS (Vector (v.x - apPositionX[3], v.y - apPositionY[3], v.z),InterferenceVal4);
