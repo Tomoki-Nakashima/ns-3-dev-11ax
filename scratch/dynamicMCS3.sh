@@ -74,7 +74,7 @@ rxSensitivity=-100
 
 result_filename=dynamicMCS3_100.csv
 
-for ccaSdThreshold in -73.00732593;
+for ccaSdThreshold in -74.86448663;
 do
 for mcs in VhtMcs3;
 do
