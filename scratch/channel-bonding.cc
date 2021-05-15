@@ -1051,12 +1051,11 @@ InterferenceVal7=maxSecInterference7;
       CreateObject<UniformDiscPositionAllocator> ();
   unitDiscPositionAllocator1->AssignStreams (streamNumber);
   // AP1 is at origin (x=x1, y=y1), with radius Rho=r
-  unitDiscPositionAllocator1->SetX (apPositionX[0]);
-  unitDiscPositionAllocator1->SetY (distance);
+  unitDiscPositionAllocator1->SetY (0);
   unitDiscPositionAllocator1->SetRho (0);
   for (uint32_t i = 0; i < n; i++)
     {
-      unitDiscPositionAllocator1->SetY (distance*std::pow(-1,i));
+      unitDiscPositionAllocator1->SetX (apPositionX[0]+distance*std::pow(-1,i));
       Vector v = unitDiscPositionAllocator1->GetNext ();
       std::cout << "AP1 sta: (" << v.x << ", " << v.y << ")" << std::endl;
       positionAlloc->Add (v);
@@ -1069,12 +1068,11 @@ InterferenceVal7=maxSecInterference7;
           CreateObject<UniformDiscPositionAllocator> ();
       unitDiscPositionAllocator2->AssignStreams (streamNumber + 1);
       // AP2 is at origin (x=x2, y=y2), with radius Rho=r
-      unitDiscPositionAllocator2->SetX (apPositionX[1]);
-      unitDiscPositionAllocator2->SetY (distance);
+      unitDiscPositionAllocator2->SetY (0);
       unitDiscPositionAllocator2->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
-          unitDiscPositionAllocator2->SetY (distance*std::pow(-1,i));
+          unitDiscPositionAllocator2->SetX (apPositionX[1]+distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator2->GetNext ();
           std::cout << "AP2 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
@@ -1089,12 +1087,11 @@ InterferenceVal7=maxSecInterference7;
           CreateObject<UniformDiscPositionAllocator> ();
       unitDiscPositionAllocator3->AssignStreams (streamNumber + 2);
       // AP3 is at origin (x=x3, y=y3), with radius Rho=r
-      unitDiscPositionAllocator3->SetX (apPositionX[2]);
-      unitDiscPositionAllocator3->SetY (distance);
+      unitDiscPositionAllocator3->SetY (0);
       unitDiscPositionAllocator3->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
-          unitDiscPositionAllocator3->SetY (distance*std::pow(-1,i));
+          unitDiscPositionAllocator3->SetX (apPositionX[2]+distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator3->GetNext ();
           std::cout << "AP3 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
@@ -1109,12 +1106,11 @@ InterferenceVal7=maxSecInterference7;
           CreateObject<UniformDiscPositionAllocator> ();
       unitDiscPositionAllocator4->AssignStreams (streamNumber + 3);
       // AP4 is at origin (x=x4, y=y4), with radius Rho=r
-      unitDiscPositionAllocator4->SetX (apPositionX[3]);
-      unitDiscPositionAllocator4->SetY (distance);
+      unitDiscPositionAllocator4->SetY (0);
       unitDiscPositionAllocator4->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
-          unitDiscPositionAllocator4->SetY (distance*std::pow(-1,i));
+          unitDiscPositionAllocator4->SetX (apPositionX[3]+distance*std::pow(-1,i));
           Vector v = unitDiscPositionAllocator4->GetNext ();
           std::cout << "AP4 sta: (" << v.x << ", " << v.y << ")" << std::endl;
           positionAlloc->Add (v);
