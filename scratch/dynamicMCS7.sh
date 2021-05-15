@@ -1,6 +1,6 @@
 payloadSize=1472 # bytes
 simulationTime=100 # seconds
-distance=5 # meters
+distance=1 # meters
 interBssDistance=15 # meters
 txMaskInnerBandMinimumRejection=-40.0 # dBr
 txMaskOuterBandMinimumRejection=-56.0 # dBr
@@ -74,7 +74,7 @@ rxSensitivity=-100
 
 result_filename=dynamicMCS7_100.csv
 
-for ccaSdThreshold in -82 -62 -83.63746694;
+for ccaSdThreshold in -82 -62 -64.58270958;
 do
 for mcs in VhtMcs7;
 do
