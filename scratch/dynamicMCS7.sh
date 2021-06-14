@@ -7,20 +7,20 @@ txMaskOuterBandMinimumRejection=-56.0 # dBr
 txMaskOuterBandMaximumRejection=-80.0 # dBr
 
 channelBssA=36
-channelBssB=36
-channelBssC=52
-channelBssD=52
-channelBssE=44
-channelBssF=44
-channelBssG=44
+channelBssB=52
+channelBssC=100
+channelBssD=36
+channelBssE=52
+channelBssF=100
+channelBssG=100
 
 primaryChannelBssA=36
-primaryChannelBssB=36
-primaryChannelBssC=52
-primaryChannelBssD=52
-primaryChannelBssE=44
-primaryChannelBssF=44
-primaryChannelBssG=44
+primaryChannelBssB=52
+primaryChannelBssC=100
+primaryChannelBssD=36
+primaryChannelBssE=52
+primaryChannelBssF=100
+primaryChannelBssG=100
 
 mcs1=VhtMcs0
 mcs2=VhtMcs0
@@ -51,8 +51,8 @@ downlinkA=100
 downlinkB=100
 downlinkC=100
 downlinkD=100
-downlinkE=0
-downlinkF=0
+downlinkE=100
+downlinkF=100
 downlinkG=0
 
 
@@ -68,7 +68,7 @@ channelBondingType="ConstantThreshold"
 Test=""
 
 n=10
-nBss=4
+nBss=6
 
 rxSensitivity=-100
 
